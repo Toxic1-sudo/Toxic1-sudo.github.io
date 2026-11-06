@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<article class="doc">
+  <h1 class="doc-title">全部笔记</h1>
+  <p class="lede">{{ site.description }}</p>
+
+  <ul class="note-list">
+    {% for post in site.posts %}
+    <li>
+      <span class="note-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+      <a class="note-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      {% if post.categories %}<span class="note-cat">{{ post.categories | join: " / " }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  {{ content }}
+</article>

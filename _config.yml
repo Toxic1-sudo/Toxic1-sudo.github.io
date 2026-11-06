@@ -1,0 +1,19 @@
+title: Toxic1 的笔记
+description: CTF / Web 安全 / 渗透测试 学习记录
+author: Toxic1
+url: "https://toxic1-sudo.github.io"
+baseurl: ""
+
+timezone: Asia/Shanghai
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+plugins:
+  - jekyll-feed
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

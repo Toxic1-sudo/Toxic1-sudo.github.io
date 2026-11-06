@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title and page.title != "首页" %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+  {% feed_meta %}
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <span class="brand-name">{{ site.title }}</span>
+        <span class="brand-sub">{{ site.description }}</span>
+      </a>
+
+      <div class="search">
+        <input id="tree-filter" type="search" placeholder="筛选笔记标题" autocomplete="off" spellcheck="false">
+      </div>
+
+      <nav class="tree" id="tree">
+        {% assign groups = site.posts | group_by_exp: "post", "post.categories.first" %}
+        {% for g in groups %}
+          {% assign gname = g.name %}
+          {% if gname == "" or gname == nil %}{% assign gname = "未分类" %}{% endif %}
+          <details class="tree-group" open>
+            <summary>
+              <span class="folder">{{ gname }}</span>
+              <span class="count">{{ g.items | size }}</span>
+            </summary>
+            <ul>
+              {% for post in g.items %}
+              <li>
+                <a href="{{ post.url | relative_url }}"{% if page.url == post.url %} class="active"{% endif %}>{{ post.title }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </details>
+        {% endfor %}
+      </nav>
+
+      <div class="sidebar-foot">
+        <a href="{{ '/about/' | relative_url }}">关于</a>
+        <a href="https://github.com/Toxic1-sudo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="content-inner">
+      {{ content }}
+    </div>
+  </main>
+
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById('tree-filter');
+  var tree = document.getElementById('tree');
+  if (!box || !tree) return;
+  box.addEventListener('input', function () {
+    var q = box.value.trim().toLowerCase();
+    var groups = tree.querySelectorAll('.tree-group');
+    for (var i = 0; i < groups.length; i++) {
+      var group = groups[i];
+      var links = group.querySelectorAll('a');
+      var shown = 0;
+      for (var j = 0; j < links.length; j++) {
+        var hit = !q || links[j].textContent.toLowerCase().indexOf(q) !== -1;
+        links[j].parentNode.style.display = hit ? '' : 'none';
+        if (hit) shown++;
+      }
+      group.style.display = shown ? '' : 'none';
+      group.setAttribute('open', '');
+    }
+  });
+})();
+</script>
+</body>
+</html>
