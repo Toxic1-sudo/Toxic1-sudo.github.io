@@ -7,6 +7,7 @@ baseurl: ""
 timezone: Asia/Shanghai
 markdown: kramdown
 permalink: /:year/:month/:day/:title/
+future: true
 
 plugins:
   - jekyll-feed
